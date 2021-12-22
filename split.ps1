@@ -9,7 +9,7 @@ Param(
   [long] $endPart = 0,
   [switch] $noJoin = $False,
   [switch] $noTest = $False,
-  [switch] $noSum = $False
+  [switch] $noSum = $True
 )
 
 [long] $BUFFER_BYTES = 1024 * 80
@@ -34,13 +34,14 @@ if ($srcBytes -le $size) {
 }
 
 if ($startPart -ne 0 -or $endPart -ne 0) {
-  if ($startPart -lt 0 -or $endPart -lt 0 -or $startPart > $endPart ) {
-    $Host.UI.WriteErrorLine('Specify a startPart less or equal than endPart.')
+  if ($startPart -lt 0 -or $endPart -lt 0 -or $startPart -gt $endPart ) {
+    $Host.UI.WriteErrorLine('Specify a startPart less or equal than endPart and greater than 0')
     exit 1
   }
 }
 
 $path = $(Get-ChildItem $path).FullName
+
 [IO.FileStream] $streamSrc = New-Object IO.FileStream(
   $path, [IO.FileMode]::Open, [IO.FileAccess]::Read)
 
@@ -52,10 +53,9 @@ $path = $(Get-ChildItem $path).FullName
 [long] $readBytes = -1
 
 if ($startPart -ne 0 -or $endPart -ne 0){
-  [byte[]] $data = New-Object byte[] ($startPart * $size)
-  $streamSrc.Read($data, 0, ($startPart * $size))
-  $srcBytes = ($endPart - $startPart) * $size
-  $fileNum = $startPart
+  $streamSrc.Position=($startPart * $size)
+  $srcBytes = (1+$endPart - $startPart) * $size
+  $fileNum = $startPart-1
 }
 
 while ($srcBytes -gt 0 -and $readBytes -ne 0) {
