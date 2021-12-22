@@ -61,7 +61,7 @@ if ($startPart -ne 0){
 }
 if ($endPart -ne 0){
   $endPart -= 1
-  $srcBytes = 1+($endPart - $startPart) * $size
+  $srcBytes = (1 + $endPart - $startPart) * $size
 }
 
 while ($srcBytes -gt 0 -and $readBytes -ne 0) {
@@ -109,8 +109,8 @@ if (-not $noJoin) {
 if (-not $noTest) {
   # BAT to join files test
   Out-File -FilePath ($path + '.join.test.bat') -Encoding Default -InputObject (
-    $cmdJoin + '" "' + $path + '.tmp"`r`n' +
-    'fc /b ' +'"'+ $path + '" "' + $path + '.tmp" && del "' + $path + '.tmp"`r`n' +
+    $cmdJoin + '" "' + $path + '.tmp"' + "`r`n" +
+    'fc /b ' +'"'+ $path + '" "' + $path + '.tmp" && del "' + $path + '.tmp"' + "`r`n" +
     "@echo Push any key to close...`r`n@pause > nul")
 }
 
