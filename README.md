@@ -48,7 +48,12 @@ split <target-file-path> [<split-size>] [-noJoin] [-noTest] [-noSum]
 
 ### `-path`
 
-The target file path.
+The input file path.
+
+### `-pathOut`
+
+The output directory.
+If not specified the output is the same folder of the input file.
 
 ### `-size`
 
@@ -60,6 +65,15 @@ For example, split a `test.zip` to 640mb files.
 ```console
 split -size 640mb test.zip
 ```
+### `-startPart`
+
+Choose to save splitted files that start from nth (specified here) parts included.
+This is optional.
+
+### `-endPart`
+
+Choose the last nth parts saved (stop save splitted files).
+This is optional.
 
 ### `-noJoin`
 
