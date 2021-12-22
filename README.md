@@ -16,7 +16,7 @@ split target-file-path
 
 Or, you can drag & drop a target file to a `split.cmd` icon.
 
-For example, `split "C:\test.jpg"` was run, and then, these files were created:
+For example, `split "test.jpg"` was run, and then, these files were created:
 
 ```
 test.jpg.001
@@ -35,7 +35,7 @@ test.jpg.join.test.bat
 ## `split` Command
 
 ```console
-split <target-file-path>
+split <target-file>
 ```
 
 ```console
