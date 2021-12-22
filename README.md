@@ -57,10 +57,10 @@ If not specified the output is the same folder of the input file.
 
 ### `-size`
 
-The size of the split files that is a number as bytes or a number with an unit such as `5kb`, `5mb`, `5gb`, etc..  
-This is optional. The default is `256mb`.
+The size of the split files that is a number as bytes or a number with an unit such as `5KB`, `5MB`, `5GB`, etc..  
+This is optional. The default is `256MB`.
 
-For example, split a `test.zip` to 640mb files.
+For example, split a `test.zip` to 640MB files.
 
 ```console
 split -size 640mb test.zip
