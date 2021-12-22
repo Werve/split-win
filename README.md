@@ -63,7 +63,7 @@ This is optional. The default is `256MB`.
 For example, split a `test.zip` to 640MB files.
 
 ```console
-split -size 640mb test.zip
+split -size 640MB test.zip
 ```
 ### `-startPart`
 
