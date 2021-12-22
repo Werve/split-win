@@ -11,12 +11,12 @@ It is recommended to save the `split.ps1` and `split.cmd` files into the `Path` 
 Run this command in console:
 
 ```console
-split target-file
+split target-file-path
 ```
 
 Or, you can drag & drop a target file to a `split.cmd` icon.
 
-For example, `split test.jpg` was run, and then, these files were created:
+For example, `split "C:\test.jpg"` was run, and then, these files were created:
 
 ```
 test.jpg.001
@@ -60,10 +60,10 @@ If not specified the output is the same folder of the input file.
 The size of the split files that is a number as bytes or a number with an unit such as `5KB`, `5MB`, `5GB`, etc..  
 This is optional. The default is `256MB`.
 
-For example, split a `test.zip` to 640MB files.
+For example, split `C:\test.zip` to 640MB files.
 
 ```console
-split -size 640MB test.zip
+split -size 640MB "C:\test.zip"
 ```
 ### `-startPart`
 
