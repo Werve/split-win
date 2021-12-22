@@ -39,11 +39,11 @@ split <target-file>
 ```
 
 ```console
-split -path <target-file-path> [-pathOut <output-path>] [-size <split-size>] [-startPart <start-number-part>] [-endPart <end-number-part>] [-noJoin] [-noTest] [-noSum]
+split -path <target-file-path> [-pathOut <output-path>] [-size <split-size>] [-startPart <start-number-part>] [-endPart <end-number-part>] [-noJoin] [-noTest] [-Sum]
 ```
 
 ```console
-split <target-file-path> [<output-path>] [<split-size>] [<start-number-part>] [<end-number-part>] [-noJoin] [-noTest] [-noSum]
+split <target-file-path> [<output-path>] [<split-size>] [<start-number-part>] [<end-number-part>] [-noJoin] [-noTest] [-Sum]
 ```
 
 ### `-path`
@@ -85,7 +85,7 @@ This is optional.
 Don't create a BAT file to test.  
 This is optional.
 
-### `-noSum`
+### `-Sum`
 
-Don't create a list of file checksum.  
+Create a list of file checksum.  
 This is optional.
