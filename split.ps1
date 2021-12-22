@@ -33,8 +33,9 @@ if ($srcBytes -le $size) {
   exit 1
 }
 
+
 if ($startPart -ne 0 -or $endPart -ne 0) {
-  if ($startPart -lt 0 -or $endPart -lt 0 -or $startPart -gt $endPart ) {
+  if ($startPart -lt 0 -or $endPart -lt 0 -or ($endPart -gt 0 -and $startPart -gt $endPart) ) {
     $Host.UI.WriteErrorLine('Specify a startPart less or equal than endPart and greater than 0')
     exit 1
   }
@@ -52,10 +53,15 @@ $path = $(Get-ChildItem $path).FullName
 [long] $destBytes = 0
 [long] $readBytes = -1
 
-if ($startPart -ne 0 -or $endPart -ne 0){
-  $streamSrc.Position=($startPart * $size)
-  $srcBytes = (1+$endPart - $startPart) * $size
-  $fileNum = $startPart-1
+if ($startPart -ne 0){
+  $startPart -= 1
+  $streamSrc.Position=(($startPart) * $size)
+  $srcBytes -= $startPart * $size
+  $fileNum = $startPart
+}
+if ($endPart -ne 0){
+  $endPart -= 1
+  $srcBytes = 1+($endPart - $startPart) * $size
 }
 
 while ($srcBytes -gt 0 -and $readBytes -ne 0) {
@@ -67,7 +73,7 @@ while ($srcBytes -gt 0 -and $readBytes -ne 0) {
     }
     # New file
     $fileNum++
-    [string] $pathDest = $pathOut + '\' + (Split-Path $path -Leaf) + '.' + $fileNum.ToString('000')
+    [string] $pathDest = $pathOut + (Split-Path $path -Leaf) + '.' + $fileNum.ToString('000')
     $streamDest = New-Object IO.FileStream(
       $pathDest, [IO.FileMode]::Create, [IO.FileAccess]::Write)
     $destBytes = 0
@@ -92,19 +98,19 @@ if ($streamDest -ne $Null -and $destBytes -gt 0) {
 $streamSrc.Close()
 
 # join command
-[string] $cmdJoin = 'COPY /b ' + [string]::Join(' +', $destList.ToArray())
+[string] $cmdJoin = 'COPY /b ' + '"'+ [string]::Join('" +"', $destList.ToArray())
 
 if (-not $noJoin) {
   # BAT to join files
   Out-File -FilePath ($path + '.join.bat') -Encoding Default -InputObject (
-    $cmdJoin + ' ' + $path)
+    $cmdJoin + '" "' + $path + '"')
 }
 
 if (-not $noTest) {
   # BAT to join files test
   Out-File -FilePath ($path + '.join.test.bat') -Encoding Default -InputObject (
-    $cmdJoin + ' ' + $path + ".tmp`r`n" +
-    'fc /b ' + $path + ' ' + $path + '.tmp && del ' + $path + ".tmp`r`n" +
+    $cmdJoin + '" "' + $path + '.tmp"`r`n' +
+    'fc /b ' +'"'+ $path + '" "' + $path + '.tmp" && del "' + $path + '.tmp"`r`n' +
     "@echo Push any key to close...`r`n@pause > nul")
 }
 
