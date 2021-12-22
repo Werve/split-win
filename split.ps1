@@ -14,13 +14,16 @@ Param(
 
 [long] $BUFFER_BYTES = 1024 * 80
 
-if (-not (Test-Path $path)) {
+if (-not (Test-Path $path) -or $path -eq $Null) {
   $Host.UI.WriteErrorLine('Specify the input file.')
   exit 1
 }
 
-if (-not (Test-Path $pathOut)) {
-  $path = Split-Path -Path $path
+if ($pathOut -eq $Null -or $pathOut -eq ''){
+  $pathOut = Split-Path -Path $path
+}
+elseif (-not (Test-Path $pathOut)){
+    $pathOut = Split-Path -Path $path
 }
 
 [long] $srcBytes = $(Get-ChildItem $path).Length
@@ -41,7 +44,7 @@ $path = $(Get-ChildItem $path).FullName
 [IO.FileStream] $streamSrc = New-Object IO.FileStream(
   $path, [IO.FileMode]::Open, [IO.FileAccess]::Read)
 
-[Collections.Generic.List[string]] $destList = New-Object Collections.Generic.List[string
+[Collections.Generic.List[string]] $destList = New-Object Collections.Generic.List[string]
 
 [int] $fileNum = 0
 [IO.FileStream] $streamDest
@@ -49,8 +52,8 @@ $path = $(Get-ChildItem $path).FullName
 [long] $readBytes = -1
 
 if ($startPart -ne 0 -or $endPart -ne 0){
-  [byte[]] $data = New-Object byte[] $startPart * $size
-  $streamSrc.Read($data, 0, $copyBytes)
+  [byte[]] $data = New-Object byte[] ($startPart * $size)
+  $streamSrc.Read($data, 0, ($startPart * $size))
   $srcBytes = ($endPart - $startPart) * $size
   $fileNum = $startPart
 }
@@ -64,7 +67,7 @@ while ($srcBytes -gt 0 -and $readBytes -ne 0) {
     }
     # New file
     $fileNum++
-    [string] $pathDest = $pathOut + (Split-Path $path -Leaf) + '.' + $fileNum.ToString('000')
+    [string] $pathDest = $pathOut + '\' + (Split-Path $path -Leaf) + '.' + $fileNum.ToString('000')
     $streamDest = New-Object IO.FileStream(
       $pathDest, [IO.FileMode]::Create, [IO.FileAccess]::Write)
     $destBytes = 0
@@ -73,7 +76,7 @@ while ($srcBytes -gt 0 -and $readBytes -ne 0) {
   [long] $copyBytes = $BUFFER_BYTES
   if ($copyBytes -gt $srcBytes) { $copyBytes = $srcBytes }
   if ($copyBytes -gt $size - $destBytes) { $copyBytes = $size - $destBytes }
-
+  
   [byte[]] $data = New-Object byte[] $copyBytes
   $readBytes = $streamSrc.Read($data, 0, $copyBytes)
   $streamDest.Write($data, 0, $readBytes)
