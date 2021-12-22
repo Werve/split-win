@@ -39,11 +39,11 @@ split <target-file-path>
 ```
 
 ```console
-split -path <target-file-path> [-size <split-size>] [-noJoin] [-noTest] [-noSum]
+split -path <target-file-path> [-pathOut <output-path>] [-size <split-size>] [-startPart <start-number-part>] [-endPart <end-number-part>] [-noJoin] [-noTest] [-noSum]
 ```
 
 ```console
-split <target-file-path> [<split-size>] [-noJoin] [-noTest] [-noSum]
+split <target-file-path> [<output-path>] [<split-size>] [<start-number-part>] [<end-number-part>] [-noJoin] [-noTest] [-noSum]
 ```
 
 ### `-path`
